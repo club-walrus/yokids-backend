@@ -6,7 +6,7 @@ var googleMapsClient = require('@google/maps').createClient({
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Welcome to Club Walrus' });
+  res.render('index', { title: 'Club Walrus' });
 });
 
 router.get('/api/geocode', function(req, res, next) {
@@ -71,13 +71,13 @@ router.get('/api/nearby', function(req, res, next) {
     var parameters = {}
 
     if (req.query.location) {
-	parameters.query = req.query.location;
+	parameters.location = req.query.location;
     }
     if (req.query.radius) {
-	parameters.query = req.query.radius;
+	parameters.radius = req.query.radius;
     }
-    if (req.query.type) {
-	parameters.pagetoken = req.query.types;
+    if (req.query.types) {
+	parameters.types = req.query.types;
     }
     if (req.query.pagetoken) {
 	parameters.pagetoken = req.query.pagetoken;
