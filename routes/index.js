@@ -1,7 +1,7 @@
 var express          = require('express');
 var router           = express.Router();
 var googleMapsClient = require('@google/maps').createClient({
-    key: 'AIzaSyA2IyA96NMZYwiOPc-aZ9nRKps1izG5CrQ'
+    key: 'AIzaSyAZqUTPIqmEf3nCXqgOtDevR_1EArNYwsY'
 });
 
 /* GET home page. */
@@ -63,7 +63,7 @@ router.get('/api/place', function(req, res, next) {
 /**
    @param: location
    @param: radius
-   @param: keyword
+   @param: types
    @param: pagetoken
 */
 
@@ -76,8 +76,12 @@ router.get('/api/nearby', function(req, res, next) {
     if (req.query.radius) {
 	parameters.radius = req.query.radius;
     }
-    if (req.query.types) {
-	parameters.types = req.query.types;
+    else {
+	parameters.radius = 10000
+    }
+
+    if (req.query.type) {
+	parameters.type = req.query.type;
     }
     if (req.query.pagetoken) {
 	parameters.pagetoken = req.query.pagetoken;
