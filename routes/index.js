@@ -6,7 +6,7 @@ var googleMapsClient = require('@google/maps').createClient({
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Welcome to Club Walrus' });
 });
 
 router.get('/api/geocode', function(req, res, next) {
@@ -20,15 +20,25 @@ router.get('/api/geocode', function(req, res, next) {
 });
 
 /**
-   @params: query 
-   @param:  pagetoken
+   @param: query
+   @param: pagetoken
+   @param: type
 */
 
 router.get('/api/places', function(req, res, next) {
-    var query = req.query.query
-    var response = googleMapsClient.places({
-	query: query
-    }, function(err, response) {
+    var parameters = {};
+
+    if (req.query.query) {
+	parameters.query = req.query.query;
+    }
+    if (req.query.pagetoken) {
+	parameters.pagetoken = req.query.pagetoken;
+    }
+    if (req.query.types) {
+	parameters.pagetoken = req.query.types;
+    }
+
+    var response = googleMapsClient.places(parameters, function(err, response) {
 	if (!err) {
 	    res.send(response);
 	}
@@ -36,7 +46,7 @@ router.get('/api/places', function(req, res, next) {
 });
 
 /**
-   @params: placeid
+   @param: placeid
 */
 
 router.get('/api/place', function(req, res, next) {
@@ -50,24 +60,55 @@ router.get('/api/place', function(req, res, next) {
     });
 });
 
+/**
+   @param: location
+   @param: radius
+   @param: keyword
+   @param: pagetoken
+*/
+
 router.get('/api/nearby', function(req, res, next) {
-    var latlng = req.query.latlng
-    var response = googleMapsClient.placesNearby({
-	location: latlng,
-	radius  : 5000
-    }, function(err, response) {
+    var parameters = {}
+
+    if (req.query.location) {
+	parameters.query = req.query.location;
+    }
+    if (req.query.radius) {
+	parameters.query = req.query.radius;
+    }
+    if (req.query.type) {
+	parameters.pagetoken = req.query.types;
+    }
+    if (req.query.pagetoken) {
+	parameters.pagetoken = req.query.pagetoken;
+    }
+    var response = googleMapsClient.placesNearby(parameters, function(err, response) {
 	if (!err) {
 	    res.send(response);
 	}
     });
 });
 
-router.get('/api/nearby', function(req, res, next) {
-    var latlng = req.query.latlng
-    var response = googleMapsClient.placesNearby({
-	location: latlng,
-	radius  : 5000
-    }, function(err, response) {
+/**
+   @param: photoreference
+   @param: maxheight
+   @param: maxwidth
+*/
+
+router.get('/api/placephoto', function(req, res, next) {
+    var parameters = {};
+
+    if (req.query.photoreference) {
+	parameters.photoreference = req.query.photoreference;
+    }
+    if (req.query.maxheight) {
+	parameters.maxheight = req.query.maxheight;
+    }
+    if (req.query.maxwidth) {
+	parameters.maxwidth = req.query.maxwidth;
+    }
+
+    var response = googleMapsClient.placesNearby(parameters, function(err, response) {
 	if (!err) {
 	    res.send(response);
 	}
