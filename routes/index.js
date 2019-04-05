@@ -106,13 +106,13 @@ router.get('/api/placephoto', function(req, res, next) {
 	parameters.photoreference = req.query.photoreference;
     }
     if (req.query.maxheight) {
-	parameters.maxheight = req.query.maxheight;
+	parameters.maxheight = parseInt(req.query.maxheight, 10);
     }
     if (req.query.maxwidth) {
-	parameters.maxwidth = req.query.maxwidth;
+	parameters.maxwidth = parseInt(req.query.maxwidth, 10);
     }
 
-    var response = googleMapsClient.placesNearby(parameters, function(err, response) {
+    var response = googleMapsClient.placesPhoto(parameters, function(err, response) {
 	if (!err) {
 	    res.send(response);
 	}
