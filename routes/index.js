@@ -1,7 +1,8 @@
 var express          = require('express');
 var router           = express.Router();
 var googleMapsClient = require('@google/maps').createClient({
-    key: 'AIzaSyAZqUTPIqmEf3nCXqgOtDevR_1EArNYwsY'
+    key: 'AIzaSyAZqUTPIqmEf3nCXqgOtDevR_1EArNYwsY',
+    Promise: Promise
 });
 
 /* GET home page. */
@@ -112,13 +113,15 @@ router.get('/api/placephoto', function(req, res, next) {
 	parameters.maxwidth = parseInt(req.query.maxwidth, 10);
     }
 
-    var response = googleMapsClient.placesPhoto(parameters, function(err, response) {
-	if (!err) {
-	    res.send(response);
-	}
-    });
+    var response = googleMapsClient.placesPhoto(parameters).asPromise()
+	.then(function(response) {
+	    res.append('location',  "https://" + response.socket._host + response.req.path);
+	    res.sendStatus(302);
+	})
+	.catch((err) => {
+	    console.log(err);
+	});
 });
-
 
 
 module.exports = router;
