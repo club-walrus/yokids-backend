@@ -1,9 +1,19 @@
 var express          = require('express');
+var cors             = require('cors');
 var router           = express.Router();
 var googleMapsClient = require('@google/maps').createClient({
     key: 'AIzaSyAZqUTPIqmEf3nCXqgOtDevR_1EArNYwsY',
     Promise: Promise
 });
+
+var corsOptions =
+    {
+	"origin": "*",
+	"methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+	"preflightContinue": false,
+	"optionsSuccessStatus": 204
+    };
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -26,7 +36,7 @@ router.get('/api/geocode', function(req, res, next) {
    @param: type
 */
 
-router.get('/api/places', function(req, res, next) {
+router.get('/api/places', cors(corsOptions), function(req, res, next) {
     var parameters = {};
 
     if (req.query.query) {
@@ -50,7 +60,7 @@ router.get('/api/places', function(req, res, next) {
    @param: placeid
 */
 
-router.get('/api/place', function(req, res, next) {
+router.get('/api/place', cors(corsOptions), function(req, res, next) {
     var placeid = req.query.placeid;
     var response = googleMapsClient.place({
 	placeid: placeid
@@ -68,7 +78,7 @@ router.get('/api/place', function(req, res, next) {
    @param: pagetoken
 */
 
-router.get('/api/nearby', function(req, res, next) {
+router.get('/api/nearby', cors(corsOptions), function(req, res, next) {
     var parameters = {}
 
     if (req.query.location) {
@@ -100,7 +110,7 @@ router.get('/api/nearby', function(req, res, next) {
    @param: maxwidth
 */
 
-router.get('/api/placephoto', function(req, res, next) {
+router.get('/api/placephoto', cors(corsOptions), function(req, res, next) {
     var parameters = {};
 
     if (req.query.photoreference) {
